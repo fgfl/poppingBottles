@@ -49,6 +49,7 @@ const calcBottles = (investment, caps = 0, emptyBottles = 0) => {
     fromCaps: 0,
     fromEmpties: 0,
   };
+  // remainder is the input values because for the base case we won't be able to buy more
   const remainder = {
     caps: caps,
     bottles: emptyBottles,
