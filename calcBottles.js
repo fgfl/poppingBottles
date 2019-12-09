@@ -52,6 +52,7 @@ const calcBottles = (investment, caps = 0, emptyBottles = 0) => {
   const remainder = {
     caps: caps,
     bottles: emptyBottles,
+    cash: investment,
   };
 
   if (investment < dollarPerBottle && caps < capsPerBottle && emptyBottles < emptyPerFull) {
@@ -103,11 +104,12 @@ const initialInvestment = ([...process.argv].slice(2) | 0);
 const {total, remainder} = calcBottles(initialInvestment);
 
 console.log(
-  `With $${initialInvestment}, you will get:
+`With $${initialInvestment}, you will get:
   Total Bottles: ${total.bottles}
   Remaining Bottles: ${remainder.bottles}
   Remaining Caps: ${remainder.caps}
   Total Earned Through:
     Empty Bottles: ${total.fromEmpties}
-    Caps: ${total.fromCaps}`
+    Caps: ${total.fromCaps}
+Your change is $${remainder.cash}.`
 );
