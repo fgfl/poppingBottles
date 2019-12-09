@@ -24,6 +24,17 @@
     Bottles: 37
     Caps: 18
 
+  Task 4
+  Add to the output, so that the program will tell the customer how many bottles and bottle caps
+  they will have left over. We have to upsell the customer on buying more pop after all!
+
+  Sample Output
+  Total Bottles: 75
+  Remaining Bottles: 1
+  Remaining Caps: 3
+  Total Earned:
+    Bottles: 37
+    Caps: 18
 */
 
 // caculates the number of bottles you can get from an initial dollar investment
@@ -33,15 +44,23 @@ const calcBottles = (investment, caps = 0, emptyBottles = 0) => {
   const capsPerBottle = 4;
   const emptyPerFull = 2;
 
-  let total = {
+  const total = {
     bottles: 0,
     fromCaps: 0,
     fromEmpties: 0,
-  }
+  };
+  const remainder = {
+    caps: caps,
+    bottles: emptyBottles,
+  };
 
   if (investment < dollarPerBottle && caps < capsPerBottle && emptyBottles < emptyPerFull) {
     // base case. can't get any more full bottles.
-    return total;
+    // console.log('base case: total:', total, 'remainder: ', remainder);
+    return {
+      total,
+      remainder,
+    };
   }
 
   const fullBottlesFromCaps = Math.floor(caps / capsPerBottle);
@@ -53,11 +72,13 @@ const calcBottles = (investment, caps = 0, emptyBottles = 0) => {
   const remainingCaps = fullBottles + caps % capsPerBottle;
   const remainingEmptyBottles = fullBottles + emptyBottles % emptyPerFull;
 
+  // curent bottles from this investment of cash, caps, and bottles
   total.bottles += fullBottles;
   total.fromCaps += fullBottlesFromCaps;
   total.fromEmpties += fullBottlesFromEmpties;
 
-  const bottlesFromRecycling = calcBottles(
+  // Calc the # bottles acquired from remaining caps and bottles
+  const {total: bottlesFromRecycling, remainder: remainingRecyclables} = calcBottles(
     investment % dollarPerBottle,
     remainingCaps,
     remainingEmptyBottles);
@@ -65,18 +86,28 @@ const calcBottles = (investment, caps = 0, emptyBottles = 0) => {
     total[key] += bottlesFromRecycling[key];
   }
 
-  return total;
+  for (key of Object.keys(remainingRecyclables)) {
+    remainder[key] = remainingRecyclables[key];
+  }
+
+  // console.log('end: total:', total, 'remainder: ', remainder);
+  return {
+    total,
+    remainder,
+  };
 };
 
 module.exports = calcBottles;
 
 const initialInvestment = ([...process.argv].slice(2) | 0);
-const totalBottles = calcBottles(initialInvestment);
+const {total, remainder} = calcBottles(initialInvestment);
 
 console.log(
   `With $${initialInvestment}, you will get:
-  Total Bottles: ${totalBottles.bottles}
+  Total Bottles: ${total.bottles}
+  Remaining Bottles: ${remainder.bottles}
+  Remaining Caps: ${remainder.caps}
   Total Earned Through:
-    Empty Bottles: ${totalBottles.fromEmpties}
-    Caps: ${totalBottles.fromCaps}`
+    Empty Bottles: ${total.fromEmpties}
+    Caps: ${total.fromCaps}`
 );
