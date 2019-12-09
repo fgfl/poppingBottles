@@ -1,6 +1,8 @@
 /*Dec 4, 2019
   Frederick Lee
 
+  https://web.compass.lighthouselabs.ca/days/w01d5/activities/336
+
   - For every two empty bottles, you can get one free (full) bottle of pop
   - For every four bottle caps, you can get one free (full) bottle of pop
   - Each bottle of pop costs $2 to purchase

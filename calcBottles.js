@@ -36,3 +36,7 @@ const calcBottles = (investment, caps = 0, emptyBottles = 0) => {
 };
 
 module.exports = calcBottles;
+
+const initialInvestment = ([...process.argv].slice(2) | 0);
+
+console.log(`With $${initialInvestment}, you will get ${calcBottles(initialInvestment)} bottles of pop.`);
